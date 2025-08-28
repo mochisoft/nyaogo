@@ -1,0 +1,11 @@
+modules = ["python-base-3.13"]
+run = "python test.py"
+[nix]
+channel = "stable-25_05"
+
+[deployment]
+run = ["sh", "-c", "test.py"]
+
+[[ports]]
+localPort = 8080
+externalPort = 80
