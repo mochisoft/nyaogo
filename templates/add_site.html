@@ -1,0 +1,87 @@
+
+<div class="modal fade" id="siteModal" tabindex="-1" aria-labelledby="siteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="siteModalLabel">Add Site</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+<div class="modal-body row justify-content-center ms-2 me-2 ">
+  <!-- Add Site Form -->
+  <form  id="siteForm">
+    <div class="g-4">
+
+      <!-- Site ID -->
+      <div class="col-12">
+        <label for="site_id" class="form-label">Site ID</label>
+        <input type="text" class="form-control" id="site_id" name="site_id" placeholder="KEMRI">
+      </div>
+
+      <!-- Site Name -->
+      <div class="col-12">
+        <label for="site_name" class="form-label">Site Name</label>
+        <input type="text" class="form-control" id="site_name" name="site_name" placeholder="KEMRI CDC">
+      </div>
+
+      <!-- Site Country -->
+      <div class="col-12">
+        <label for="site_country_id" class="form-label">Site Country</label>
+        <input type="text" class="form-control" id="site_country_id" name="site_country_id" placeholder="KE">
+      </div>
+
+      <!-- Site City -->
+      <div class="col-12">
+        <label for="site_city" class="form-label">Site City</label>
+        <input type="text" class="form-control" id="site_city" name="site_city" placeholder="Kisumu">
+      </div>
+
+      <!-- Site Sample Size -->
+      <div class="col-12">
+        <label for="site_sample_size" class="form-label">Sample Size</label>
+        <input type="number" class="form-control" id="site_sample_size" name="site_sample_size" placeholder="100">
+      </div>
+
+      <!-- PI Name -->
+      <div class="col-12">
+        <label for="site_pi_name" class="form-label">PI Name</label>
+        <input type="text" class="form-control" id="site_pi_name" name="site_pi_name" placeholder="John Doe">
+      </div>
+
+      <!-- PI Gender -->
+      <div class="col-12">
+        <label for="site_pi_gender" class="form-label">PI Gender</label>
+        <select class="form-select" id="site_pi_gender" name="site_pi_gender">
+          <option value="" disabled selected>Select Gender</option>
+          <option value="M">Male</option>
+          <option value="F">Female</option>
+        </select>
+      </div>
+
+      <!-- PI Location -->
+      <div class="col-12">
+        <label for="pi_location" class="form-label">PI Location</label>
+        <input type="text" class="form-control" id="pi_location" name="pi_location" placeholder="KE">
+      </div>
+
+      <!-- Submit -->
+      <div class='row justify-content-center '>
+      <div class="col-6 mt-3 text-end">
+       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+        <div class="col-6 mt-3 text-start">
+        <button type="submit" class="btn btn-primary">Add site</button>
+      </div>
+      </div>
+
+    </div>
+  </form>
+
+   <!-- End Add Site Form -->
+</div>
+
+    </div>
+    </div>
+    </div>
+
+
+

@@ -1,0 +1,364 @@
+ {% include  'header.html' %} 
+<div class='container  border rounded p-4 mt-4'>
+  <h2>FIND HSR Database</h2>
+  <p>To update the study details, click the edit button corresponding to each section.</p>
+
+  <div  class='d-flex justify-content-between'>
+  <div class='text-start mt-2 mb-2'><h3>Study ID: {{study['study_id']}}</h3></div>
+  <div class='text-end mt-2 mb-2  me-2'><h4>Study Status: Completed</h4></div>
+  </div>
+  <p>{{study.protocol_desc}}</p>
+  <hr class="mt-0 mb-4" style="border-top: 2px solid #000;">
+    <p><b>Health Programme:</b> {{study.protocol_num}}</p>
+    <p><strong>Protocol Number:</strong> {{study.protocol_num}}</p>
+    <p><b>Project Code:</b> {{study.protocol_num}}</p>
+    <p><b>Grant Code:</b>    </p>
+
+    <p><b>CT.gov Number:</b> {{study.ctgov_num}} <a href='https://clinicaltrials.gov/study/{{study.ctgov_num}}' target="_blank">View </a></p> 
+    <p><b>Research Type:</b> {{study.research_type}}</p>
+    <p><b>Study Design:</b> {{study.study_design}}</p>
+   
+
+  <div  class='d-flex justify-content-between'>
+  <div class='text-start mt-2 mb-2'><h3>Study Sites</h3></div>
+  <div class='text-end mt-2 mb-2  me-2'> <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#siteModal">
+    Add Site
+  </button></div>
+
+
+  </div>
+  <hr class="mt-0 mb-4" style="border-top: 2px solid #000;">
+
+
+  <div class="container mt-2">
+    <table id="siteTable" class="table table-bordered table-striped table-hover">
+      <thead >
+        <tr>
+          <th>Site ID</th>
+          <th>Site Name</th>
+          <th>Country</th>
+          <th>City</th>
+          <th>Sample Size</th>
+          <th>PI Name</th>
+          <th>PI Gender</th>
+          <th>PI Location</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for site in study['study_sites'] %}
+        <tr>
+          <td>{{ site.site_id }}</td>
+          <td>{{ site.site_name }}</td>
+          <td>{{ site.site_country_id }}</td>
+          <td>{{ site.site_city }}</td>
+          <td>{{ site.site_sample_size }}</td>
+          <td>{{ site.site_pi_name }}</td>
+          <td>{{ site.site_pi_gender }}</td>
+          <td>{{ site.pi_location }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  
+   {% include  'add_site.html' %} 
+  
+  <div id='data_collection' class='d-flex justify-content-between'>
+  <div class='text-start mt-2 mb-2'><h3>Data Collection Tools</h3></div>
+  <div class='text-end mt-2 mb-2  me-2' > <a href='#' class='btn btn-secondary btn-sm'>Edit</a></div>
+  </div>
+  <hr class="mt-0 mb-4" style="border-top: 2px solid #000;">
+
+
+  <div class="container mt-4">
+    <form action='/study/{{study.study_id}}/add_data_collection_method' method='post'>
+      <!-- data_collection_tool (select) -->
+      <div class="mb-3">
+        <label for="data_collection_tool" class="form-label">Data Collection Tool to use:</label>
+        <select class="form-select" id="data_collection_tool" name="data_collection_tool">
+          <option value="">-- Select --</option>
+          {% for opt in options_dict['data_col_tool'] %}
+          <option value="{{ opt }}" {% if study["data_col_method"]["data_collection_tool"] == opt %}selected{% endif %}>{{ opt }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- data_collection_tool_other (text input) -->
+      <div class="mb-3">
+        <label for="data_collection_tool_other" class="form-label">If Other, specify</label>
+        <input type="text" class="form-control" id="data_collection_tool_other" name="data_collection_tool_other" value="{{study['data_col_method']['data_collection_tool_other']}}" placeholder="If Other, specify"/>
+      </div>
+
+      <!-- randomization (select) -->
+      <div class="mb-3">
+        <label for="randomization" class="form-label">Randomization Applicable?</label>
+        <select class="form-select" id="randomization" name="randomization">
+          <option value="">-- Select --</option>
+          {% for opt in options_dict['yes_no'] %}
+          <option value="{{ opt }}" {% if study["data_col_method"]["randomization"] == opt %}selected{% endif %}>{{ opt }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- use_tablets (select) -->
+      <div class="mb-3">
+        <label for="use_tablets" class="form-label">Use Tablets for data collection?</label>
+        <select class="form-select" id="use_tablets" name="use_tablets">
+          <option value="">-- Select --</option>
+          {% for opt in options_dict['yes_no'] %}
+          <option value="{{ opt }}" {% if study["data_col_method"]["use_tablets"] == opt %}selected{% endif %}>{{ opt }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="mb-3 text-end">
+      <button type="submit" class="btn btn-secondary  btn-sm">Save</button>
+      </div>
+    </form>
+  </div>
+
+
+  <div  class='d-flex justify-content-between'>
+  <div class='text-start mt-2 mb-2'><h3>Study Team</h3></div>
+    <div class='text-end mt-2 mb-2'> <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#teamModal">
+      Add Team Member
+    </button></div>
+  </div>
+  <hr class="mt-0 mb-4" style="border-top: 2px solid #000;">
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped" id="teamTable">
+      <thead class="table-light">
+        <tr>
+          <th>#</th>
+          <th>Full Name</th>
+          <th>Role</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Rows will be added here dynamically -->
+      </tbody>
+    </table>
+  </div>
+  
+  {% include  'add_team_member.html' %} 
+
+  
+  <div  class='d-flex justify-content-between'>
+  <div class='text-start mt-2 mb-2'><h3>Study Timelines</h3></div>
+  <div class='text-end mt-2 mb-2  me-2' > <a href='#' class='btn btn-secondary btn-sm'>Edit</a></div>
+  </div>
+  <hr class="mt-0 mb-4" style="border-top: 2px solid #000;">
+
+  <div class="container mt-5">
+    <form id='timelineForm' action='/study/{{study.study_id}}/add_timeline' method='POST'>
+      
+      <!-- Estimated FPFV -->
+      <div class='d-flex  mt-2 mb-2'>
+      <div class="col-md-4  mb-3 me-4">
+        <label for="estimated_fpfv" class="form-label">Estimated FPFV</label>
+        <input type="date" class="form-control" id="estimated_fpfv" name="estimated_fpfv" value="{{study.get('study_timeline', '').get('estimated_fpfv', '')}}">
+      </div>
+
+      <!-- Estimated LPLV -->
+      <div class="col-md-4  mb-3">
+        <label for="estimated_lplv" class="form-label">Estimated LPLV</label>
+        <input type="date" class="form-control" id="estimated_lplv" name="estimated_lplv" value="{{study.get('study_timeline', '').get('estimated_lplv', '')}}">
+      </div>
+        </div>
+      <!-- Actual FPFV -->
+      <div class='d-flex  mt-2 mb-2'>
+      <div class="mb-3 me-4 col-md-4">
+        <label for="actual_fpfv" class="form-label">Actual FPFV</label>
+        <input type="date" class="form-control" id="actual_fpfv" name="actual_fpfv" value="{{study.get('study_timeline', '').get('actual_fpfv', '')}}">
+      </div>
+
+      <!-- Actual LPLV -->
+      <div class="mb-3 col-md-4">
+        <label for="actual_lplv" class="form-label">Actual LPLV</label>
+        <input type="date" class="form-control" id="actual_lplv" name="actual_lplv" value="{{study.get('study_timeline', '').get('actual_lplv', '')}}">
+      </div>
+      </div>
+      <!-- Active Years (Multi-select) -->
+      <div class="mb-3 col-md-8 ms-4">
+        <label for="active_years" class="form-label">Active Years</label>
+        <select class="form-select" id="active_years" name="active_years" multiple>
+          {% for year in options_dict['years_list']  %}
+            <option value="{{ year }}" 
+              {% if year in study.get('study_timeline', '').get('active_years', '') %} selected {% endif %}>
+              {{ year }}
+            </option>
+          {% endfor %}
+        </select>
+        <div class="form-text">Hold Ctrl (Windows) or Command (Mac) to select multiple years.</div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="mb-3 me-0 text-end">
+      <button type="submit" class="btn btn-secondary btn-sm">Save</button>
+      </div>
+    </form>
+  </div>
+  
+  <div  class='d-flex justify-content-between'>
+  <div class='text-start mt-2 mb-2'><h3>Other Study Details</h3></div>
+  <div class='text-end mt-2 me-2' > <a href='#' class='btn btn-secondary btn-sm'>Edit</a></div>
+  </div>
+  <hr class="mt-0 mb-4" style="border-top: 2px solid #000;">
+
+  <div class="container mt-5 me-0">
+    <form action='/study/{{study.study_id}}/add_other_details' method='POST'>
+      <!-- FIND Role -->
+      <div class="mb-3">
+        <label for="study_population" class="form-label">FIND Role:</label>
+        <select class="form-select" id="find_role" name="find_role">
+          <option value="">-- Select --</option>
+          {% for opt in options_dict['find_role'] %}
+          <option value="{{ opt }}" {% if study["other_details"]["find_role"] == opt %}selected{% endif %}>{{ opt }}</option>
+          {% endfor %}
+          </select>
+      </div>
+      <!-- Study Population -->
+      <div class="mb-3">
+        <label for="study_population" class="form-label">Study Population:</label>
+        <select class="form-select" id="study_population" name="study_population">
+          <option value="">-- Select Population --</option>
+          {% for opt in options_dict['study_population'] %}
+          <option value="{{ opt }}" {% if study["other_details"]["study_population"] == opt %}selected{% endif %}>{{ opt }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Investigational Product Status -->
+      <div class="mb-3">
+        <label for="investigational_status" class="form-label">Investigational Product Status:</label>
+        <select class="form-select" id="investigational_status" name="investigational_status">
+          <option value="">-- Select Status --</option>
+          {% for opt in options_dict['inv_prod'] %}
+          <option value="{{ opt }}" {% if study["other_details"]["investigational_status"] == opt %}selected{% endif %}>{{ opt }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- OIR Team -->
+      <div class="mb-3">
+        <label for="oir_team" class="form-label">OIR Team:</label>
+        <select class="form-select" id="oir_team" name="oir_team">
+          <option value="">-- Select --</option>
+          {% for opt in options_dict['oir_team'] %}
+          <option value="{{ opt }}" {% if study["other_details"]["oir_team"] == opt %}selected{% endif %}>{{ opt }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Additional Notes -->
+      <div class="mb-3">
+        <label for="additional_notes" class="form-label">Additional Notes:</label>
+        <textarea class="form-control" id="additional_notes" name="additional_notes" rows="4" placeholder="Enter any additional information here...">{{study["other_details"]["additional_notes"]}} </textarea>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="mb-3 text-end">
+      <button type="submit" class="btn btn-secondary  btn-sm">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+<script>
+  var study_id = {{ study.study_id | tojson }};
+    try {
+        $(document).ready(function() {
+            console.log('jQuery loaded, initializing modal...');
+            $('#siteForm').submit(function(event) {
+                event.preventDefault();
+                console.log('Form submitted, sending AJAX...');
+                $.ajax({
+                    type: 'POST',
+                    url: '/study/'+study_id+'/add_site',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        console.log('AJAX success:', response);
+                        if (response.status === 'success') {
+                            $('#siteTable tbody').append(
+                                `<tr>
+                                    <td>${response.site.site_id}</td>
+                                    <td>${response.site.site_name}</td>      
+                                    <td>${response.site.site_country_id}</td>
+                                    <td>${response.site.site_city}</td>
+                                    <td>${response.site.site_sample_size}</td>
+                                    <td>${response.site.site_pi_name}</td>
+                                    <td>${response.site.site_pi_gender}</td>
+                                    <td>${response.site.pi_location}</td>
+                                </tr>`
+                            );
+                            $('#siteForm')[0].reset();
+                            $('#siteModal').modal('hide');
+                            alert('New Site added successfully!');
+                        } else {
+                            alert('Error: ' + response.message);
+                        }
+                    },
+                    error: function(error) {
+                        console.log('AJAX error:', error);
+                        alert('Error submitting form');
+                    }
+                });
+            });
+        });
+    } catch (e) {
+        console.error('JavaScript error:', e);
+    }
+</script>
+
+<script>
+  var study_id = {{ study.study_id | tojson }};
+    try {
+        $(document).ready(function() {
+            console.log('jQuery loaded, initializing modal...');
+            $('#teamForm').submit(function(event) {
+                event.preventDefault();
+                console.log('Form submitted, sending AJAX...');
+                $.ajax({
+                    type: 'POST',
+                    url: '/study/'+study_id+'/add_team_member',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        console.log('AJAX success:', response);
+                        if (response.status === 'success') {
+                            $('#teamTable tbody').append(
+                                `<tr>
+                                    <td></td>
+                                    <td>${response.member.full_name}</td>
+                                    <td>${response.member.role}</td>      
+                                    <td>${response.member.start_date}</td>
+                                    <td>${response.member.end_date}</td>
+                                 
+                                </tr>`
+                            );
+                            $('#teamForm')[0].reset();
+                            $('#teamModal').modal('hide');
+                            alert('New Member added successfully!');
+                        } else {
+                            alert('Error: ' + response.message);
+                        }
+                    },
+                    error: function(error) {
+                        console.log('AJAX error:', error);
+                        alert('Error submitting form');
+                    }
+                });
+            });
+        });
+    } catch (e) {
+        console.error('JavaScript error:', e);
+    }
+</script>
+
+ {% include  'footer.html' %} 

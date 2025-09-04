@@ -1,0 +1,58 @@
+<div class="modal fade" id="teamModal" tabindex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="teamModalLabel">Add Team Member</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+<div class="modal-body row justify-content-center ms-2 me-2 ">
+  
+  <!-- Add Team Member Form -->
+<form id="teamForm" class="mb-4">
+  <div class="row g-3">
+    <!-- Full Name -->
+    <div class="col-md-12">
+      <label for="full_name" class="form-label">Full Name</label>
+      <input type="text" class="form-control" id="full_name" name="full_name" required>
+    </div>
+
+    <!-- Role -->
+    <div class="col-md-12 mb-3">
+      <label for="use_tablets" class="form-label">Use Tablets for data collection?</label>
+      <select class="form-select" id="role" name="role">
+        <option value="">-- Select --</option>
+        {% for opt in options_dict['team_member_role'] %}
+        <option value="{{ opt }}">{{ opt }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <!-- Start Date -->
+    <div class="col-md-12">
+      <label for="start_date" class="form-label">Start Date</label>
+      <input type="date" class="form-control" id="start_date" name="start_date" required>
+    </div>
+
+    <!-- End Date -->
+    <div class="col-md-12">
+      <label for="end_date" class="form-label">End Date</label>
+      <input type="date" class="form-control" id="end_date" name="end_date">
+    </div>
+  </div>
+
+  <!-- Submit Button -->
+  <div class='row justify-content-center '>
+  <div class="col-6 mt-3 text-end">
+   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+  </div>
+    <div class="col-6 mt-3 text-start">
+    <button type="submit" class="btn btn-primary">Add Member</button>
+  </div>
+  </div>
+</form>
+<!-- End Add Team Member Form -->
+  </div>
+
+  </div>
+  </div>
+  </div>

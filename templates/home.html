@@ -1,80 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head><title>HSR Database</title>
-  <style>
+ {% include  'header.html' %} 
+    <div class='container'>      
+    <h1 class='text-center mt-2 mb-2'>FIND HSR Database</h1>
+    <img id='banner' class='img-fluid' src='/static/banner.jpg' alt='Banner Image'>
+    
+      <div class="row p-0 mt-3">
+          <div class='mt-2 mb-2 col-9' id='filter'>
+          <form action="/filter" method="post">
+            <label for="filter">Filter:</label>
+            <input type="text" id="filter" name="filter">
+            <input type="submit" value="Submit">
+          </form> 
+        </div>
+          
+          <div class='mt-2 mb-2 col-3 text-end' id='add_study'>
+    <a href='/study/study' class='btn btn-primary btn-sm'> Add New Study </a>
+          </div>
+      </div>
 
-    #bbbb {
-      display: flex;
-      justify-content: left;
-      align-items: center;
-      border: 1px solid gray;
-      padding:8px;
-      margin-bottom:10px;
-      border-radius: 5px;
-
-    }
-    #content {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width:100%;
-      border: 1px solid black;      
-      border-radius: 5px;
-    }
-
-    table {
-      border-collapse: collapse;
-      border: 1px solid gray;      
-      width: 100%;
-    }
-    th {
-      border: 1px solid black;
-      padding: 10px;
-      text-align: center;
-      background-color: #blue;
-    }
-    td {
-      border: 1px solid black;
-      padding: 10px;
-      text-align: center;
-    }
-  </style>
-  </head>
-  <body>
-    <h1>Welcome to the HSR Database</h1>
-    <div id='bbbb'>
-      <form action="/filter" method="post">
-        <label for="filter">Filter:</label>
-        <input type="text" id="filter" name="filter">
-        <input type="submit" value="Submit">
-      </form> 
-    </div>
-
-        <div id='content'>
-    <table>
+        <div id='content' class='mt-2 mb-2 p-2'>
+    <table class='table table-bordered'>
       <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Price</th>
-        <th>Quantity</th>
+        <th>Study ID</th>
+        <th>Protocol Number</th>
+        <th>Protocol Short Title</th>
+        <th>CT.gov Number</th>
+        <th>Research Type</th>
+        <th colspan='2' width='18%' style='text-align:center;vertical-align: middle;' >Actions</th>
+
       </tr>
-      {% for item in items %}
+      {% for study in studies %}
       <tr>
-        <td>{{ item.id }}</td>
-        <td>{{ item.name }}</td>
-        <td>{{ item.description }}</td>
-        <td>{{ item.price }}</td>
-        <td>{{ item.quantity }}</td>
-        <td><a href="/update">Update Item</a></td>
-        <td><a href="/delete">Delete Item</a></td>
+        <td>{{ study.study_id }}</td>
+        <td>{{ study.protocol_num }}</td>
+        <td>{{ study.protocol_desc }}</td>
+        <td>{{ study.ctgov_num }}</td>
+        <td>{{ study.research_type }}</td>
+        <td cospan='2' width='18%' style='text-align:center;vertical-align: middle;'><a href='/study/{{ study.study_id }}/view'> View </a> | <a href='/update/{{ study.study_id }}'> Update</a> | <a href='/delete/{{ study.study_id }}'> Delete</a> </td>
 
       </tr>
       {% endfor %}
 
 
     </table>
+</div>
 
-        </div>
-
-  </body>
+     
+      </div>
+     {% include  'footer.html' %} 

@@ -1,0 +1,89 @@
+ {% include  'header.html' %} 
+    <div class="container mt-4">
+      <!--<form action="/study/jobs['id']/add" method="post">-->
+      <h2>FIND HSR Database</h2>
+      <p>Fill the new study details form below to add new study into HSR database</p>
+
+      <form action="/study/add" method="post">
+        <div class="row g-3 mt-2 mb-2">
+
+          <!-- Programme ID -->
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <label for="my_select" class="form-label">Health Programme</label>
+              <select class="form-select" id="health_program" name="health_program">
+                {% for opt in options_dict['health_program'] %}
+                  <option value="{{ opt }}">{{ opt }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <!-- Study ID -->
+          <div class="row">
+          <div class="col-md-6 mb-2">
+            <label for="study_id" class="form-label">Study ID</label> <br>
+            <input type="text" class="form-control" id="study_id" name="study_id" placeholder="ID001">
+          </div>
+          </div>
+
+          <!-- Protocol Number -->
+          <div class="row">
+          <div class="col-md-6 mb-2">
+            <label for="protocol_num" class="form-label">Protocol Number</label><br>
+            <input type="text" class="form-control" id="protocol_num" name="protocol_num" placeholder="ID001">
+          </div>
+            </div>
+          <!-- Protocol Description -->
+            <div class="row">
+          <div class="col-12">
+            <label for="protocol_desc" class="form-label">Protocol Description</label><br>
+            <textarea class="form-control" id="protocol_desc" name="protocol_desc" rows="2" placeholder="TB Reference Materials - Collection, Storage & Distribution"></textarea>
+          </div>
+              </div>
+          <!-- Project Number -->
+              <div class="row">
+          <div class="col-md-6">
+            <label for="project_num" class="form-label">Project Number</label><br>
+            <input type="text" class="form-control" id="project_num" name="project_num" placeholder="1111">
+          </div>
+                </div>
+          <!-- ClinicalTrials.gov Number -->
+          <div class="row">
+          <div class="col-md-6">
+            <label for="ctgov_num" class="form-label">CT.gov Number</label><br>
+            <input type="text" class="form-control" id="ctgov_num" name="ctgov_num" placeholder="2222">
+          </div>
+            </div>
+          <!-- Research Type -->
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <label for="my_select" class="form-label">Research Type</label>
+              <select class="form-select" id="research_type" name="research_type">
+                {% for opt in options_dict['research_type'] %}
+                  <option value="{{ opt }}">{{ opt }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <!-- Study Design -->
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <label for="my_select" class="form-label">Study Design</label>
+              <select class="form-select" id="study_design" name="study_design">
+                {% for opt in options_dict['study_design'] %}
+                  <option value="{{ opt }}">{{ opt }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <div class="col-6 text-start">
+            <button type="submit" class="btn btn-primary">Add New Study</button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+ {% include  'footer.html' %} 
