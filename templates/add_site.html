@@ -13,38 +13,38 @@
 
       <!-- Site ID -->
       <div class="col-12">
-        <label for="site_id" class="form-label">Site ID</label>
-        <input type="text" class="form-control" id="site_id" name="site_id" placeholder="KEMRI">
+        <label for="site_code" class="form-label">Site ID</label>
+        <input type="text" class="form-control" id="site_code" name="site_code" placeholder="Enter Site ID">
       </div>
 
       <!-- Site Name -->
       <div class="col-12">
         <label for="site_name" class="form-label">Site Name</label>
-        <input type="text" class="form-control" id="site_name" name="site_name" placeholder="KEMRI CDC">
+        <input type="text" class="form-control" id="site_name" name="site_name" placeholder="Enter Site Name">
       </div>
 
       <!-- Site Country -->
       <div class="col-12">
         <label for="site_country_id" class="form-label">Site Country</label>
-        <input type="text" class="form-control" id="site_country_id" name="site_country_id" placeholder="KE">
+        <input type="text" class="form-control" id="site_country_id" name="site_country_id" placeholder="Enter Site Country">
       </div>
 
       <!-- Site City -->
       <div class="col-12">
         <label for="site_city" class="form-label">Site City</label>
-        <input type="text" class="form-control" id="site_city" name="site_city" placeholder="Kisumu">
+        <input type="text" class="form-control" id="site_city" name="site_city" placeholder="Enter Site City">
       </div>
 
       <!-- Site Sample Size -->
       <div class="col-12">
         <label for="site_sample_size" class="form-label">Sample Size</label>
-        <input type="number" class="form-control" id="site_sample_size" name="site_sample_size" placeholder="100">
+        <input type="number" class="form-control" id="site_sample_size" name="site_sample_size" placeholder="Ex 100">
       </div>
 
       <!-- PI Name -->
       <div class="col-12">
         <label for="site_pi_name" class="form-label">PI Name</label>
-        <input type="text" class="form-control" id="site_pi_name" name="site_pi_name" placeholder="John Doe">
+        <input type="text" class="form-control" id="site_pi_name" name="site_pi_name" placeholder="Ex John Doe">
       </div>
 
       <!-- PI Gender -->
@@ -52,15 +52,16 @@
         <label for="site_pi_gender" class="form-label">PI Gender</label>
         <select class="form-select" id="site_pi_gender" name="site_pi_gender">
           <option value="" disabled selected>Select Gender</option>
-          <option value="M">Male</option>
-          <option value="F">Female</option>
+          {% for opt in options_dict['gender'] %}
+          <option value="{{ opt }}" {% if study["study_sites"]["site_pi_gender"] == opt %}selected{% endif %}>{{ opt }}</option>
+          {% endfor %}
         </select>
       </div>
 
       <!-- PI Location -->
       <div class="col-12">
         <label for="pi_location" class="form-label">PI Location</label>
-        <input type="text" class="form-control" id="pi_location" name="pi_location" placeholder="KE">
+        <input type="text" class="form-control" id="pi_location" name="pi_location" placeholder="Enter PI Location ex. Kinshasha, DRC">
       </div>
 
       <!-- Submit -->

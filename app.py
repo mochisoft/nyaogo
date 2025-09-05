@@ -6,7 +6,7 @@ db =SQLAlchemy()
 
 def create_app():
   app = Flask(__name__)
-  app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hsrdb.db'
+  app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./hsrdb.db'
 
   db.init_app(app)
   # \to import the routes

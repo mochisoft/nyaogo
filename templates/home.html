@@ -30,12 +30,12 @@
       </tr>
       {% for study in studies %}
       <tr>
-        <td>{{ study.study_id }}</td>
+        <td>{{ study.study_code }}</td>
         <td>{{ study.protocol_num }}</td>
         <td>{{ study.protocol_desc }}</td>
         <td>{{ study.ctgov_num }}</td>
         <td>{{ study.research_type }}</td>
-        <td cospan='2' width='18%' style='text-align:center;vertical-align: middle;'><a href='/study/{{ study.study_id }}/view'> View </a> | <a href='/update/{{ study.study_id }}'> Update</a> | <a href='/delete/{{ study.study_id }}'> Delete</a> </td>
+        <td cospan='2' width='18%' style='text-align:center;vertical-align: middle;'><a href='/study/{{ study.study_code }}/view'> View </a> | <a href='/update/{{ study.study_code }}'> Update</a> | <a href='/delete/{{ study.study_code }}'> Delete</a> </td>
 
       </tr>
       {% endfor %}

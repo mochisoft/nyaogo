@@ -1,10 +1,10 @@
  {% include  'header.html' %} 
 <div class='container  border rounded p-4 mt-4'>
   <h2>FIND HSR Database</h2>
-  <p>To update the study details, click the edit button corresponding to each section.</p>
+  <p>To update the study details, click the edit button corresponding to each section. <a href='/study/{{study.study_code}}/download'> Download study data</a></p>
 
   <div  class='d-flex justify-content-between'>
-  <div class='text-start mt-2 mb-2'><h3>Study ID: {{study['study_id']}}</h3></div>
+  <div class='text-start mt-2 mb-2'><h3>Study ID: {{study['study_code']}}</h3></div>
   <div class='text-end mt-2 mb-2  me-2'><h4>Study Status: Completed</h4></div>
   </div>
   <p>{{study.protocol_desc}}</p>
@@ -47,7 +47,7 @@
       <tbody>
         {% for site in study['study_sites'] %}
         <tr>
-          <td>{{ site.site_id }}</td>
+          <td>{{ site.site_code }}</td>
           <td>{{ site.site_name }}</td>
           <td>{{ site.site_country_id }}</td>
           <td>{{ site.site_city }}</td>
@@ -72,7 +72,7 @@
 
 
   <div class="container mt-4">
-    <form action='/study/{{study.study_id}}/add_data_collection_method' method='post'>
+    <form action='/study/{{study.study_code}}/add_data_collection_method' method='post'>
       <!-- data_collection_tool (select) -->
       <div class="mb-3">
         <label for="data_collection_tool" class="form-label">Data Collection Tool to use:</label>
@@ -140,7 +140,16 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Rows will be added here dynamically -->
+          {% for member in study['team_members'] %}
+          <tr>
+            <td></td>
+            <td>{{ member.full_name }}</td>
+            <td>{{ member.study_role }}</td>
+            <td>{{ member.start_date }}</td>
+            <td>{{ member.end_date }}</td>            
+
+          </tr>
+          {% endfor %}
       </tbody>
     </table>
   </div>
@@ -155,7 +164,7 @@
   <hr class="mt-0 mb-4" style="border-top: 2px solid #000;">
 
   <div class="container mt-5">
-    <form id='timelineForm' action='/study/{{study.study_id}}/add_timeline' method='POST'>
+    <form id='timelineForm' action='/study/{{study.study_code}}/add_timeline' method='POST'>
       
       <!-- Estimated FPFV -->
       <div class='d-flex  mt-2 mb-2'>
@@ -180,7 +189,7 @@
       <!-- Actual LPLV -->
       <div class="mb-3 col-md-4">
         <label for="actual_lplv" class="form-label">Actual LPLV</label>
-        <input type="date" class="form-control" id="actual_lplv" name="actual_lplv" value="{{study.get('study_timeline', '').get('actual_lplv', '')}}">
+        <input type="date" format= 'dd-MMM-yyyy' class="form-control" id="actual_lplv" name="actual_lplv" value="{{study.get('study_timeline', '').get('actual_lplv', '')}}">
       </div>
       </div>
       <!-- Active Years (Multi-select) -->
@@ -211,7 +220,7 @@
   <hr class="mt-0 mb-4" style="border-top: 2px solid #000;">
 
   <div class="container mt-5 me-0">
-    <form action='/study/{{study.study_id}}/add_other_details' method='POST'>
+    <form action='/study/{{study.study_code}}/add_other_details' method='POST'>
       <!-- FIND Role -->
       <div class="mb-3">
         <label for="study_population" class="form-label">FIND Role:</label>
@@ -272,93 +281,115 @@
 
 
 <script>
-  var study_id = {{ study.study_id | tojson }};
-    try {
-        $(document).ready(function() {
-            console.log('jQuery loaded, initializing modal...');
-            $('#siteForm').submit(function(event) {
-                event.preventDefault();
-                console.log('Form submitted, sending AJAX...');
-                $.ajax({
-                    type: 'POST',
-                    url: '/study/'+study_id+'/add_site',
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        console.log('AJAX success:', response);
-                        if (response.status === 'success') {
+var study_code = {{ study.study_code | tojson }};
+try {
+    $(document).ready(function() {
+        console.log('jQuery loaded, initializing modal...');
+
+        $('#siteForm').submit(function(event) {
+            event.preventDefault();
+            console.log('Form submitted, sending AJAX...');
+
+            $.ajax({
+                type: 'POST',
+                url: '/study/' + study_code + '/add_site',
+                data: $(this).serialize(),
+                success: function(response) {
+                    console.log('AJAX success:', response);
+
+                    if (response.status === 'success') {
+                        // Clear current table body
+                        $('#siteTable tbody').empty();
+
+                        // Loop through all sites in response and add rows
+                        response.site.forEach(function(site) {
                             $('#siteTable tbody').append(
                                 `<tr>
-                                    <td>${response.site.site_id}</td>
-                                    <td>${response.site.site_name}</td>      
-                                    <td>${response.site.site_country_id}</td>
-                                    <td>${response.site.site_city}</td>
-                                    <td>${response.site.site_sample_size}</td>
-                                    <td>${response.site.site_pi_name}</td>
-                                    <td>${response.site.site_pi_gender}</td>
-                                    <td>${response.site.pi_location}</td>
+                                    <td>${site.site_code}</td>
+                                    <td>${site.site_name}</td>
+                                    <td>${site.site_country_id}</td>
+                                    <td>${site.site_city}</td>
+                                    <td>${site.site_sample_size}</td>
+                                    <td>${site.site_pi_name}</td>
+                                    <td>${site.site_pi_gender}</td>
+                                    <td>${site.pi_location}</td>
                                 </tr>`
                             );
-                            $('#siteForm')[0].reset();
-                            $('#siteModal').modal('hide');
-                            alert('New Site added successfully!');
-                        } else {
-                            alert('Error: ' + response.message);
-                        }
-                    },
-                    error: function(error) {
-                        console.log('AJAX error:', error);
-                        alert('Error submitting form');
+                        });
+
+                        // Reset form and hide modal
+                        $('#siteForm')[0].reset();
+                        $('#siteModal').modal('hide');
+                        // alert('Sites list updated successfully!');
+                    } else {
+                        alert('Error: ' + response.message);
                     }
-                });
+                },
+                error: function(error) {
+                    console.log('AJAX error:', error);
+                    alert('Error submitting form');
+                }
             });
         });
-    } catch (e) {
-        console.error('JavaScript error:', e);
-    }
+    });
+} catch (e) {
+    console.error('JavaScript error:', e);
+}
 </script>
 
 <script>
-  var study_id = {{ study.study_id | tojson }};
-    try {
-        $(document).ready(function() {
-            console.log('jQuery loaded, initializing modal...');
-            $('#teamForm').submit(function(event) {
-                event.preventDefault();
-                console.log('Form submitted, sending AJAX...');
-                $.ajax({
-                    type: 'POST',
-                    url: '/study/'+study_id+'/add_team_member',
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        console.log('AJAX success:', response);
-                        if (response.status === 'success') {
-                            $('#teamTable tbody').append(
-                                `<tr>
-                                    <td></td>
-                                    <td>${response.member.full_name}</td>
-                                    <td>${response.member.role}</td>      
-                                    <td>${response.member.start_date}</td>
-                                    <td>${response.member.end_date}</td>
-                                 
-                                </tr>`
-                            );
-                            $('#teamForm')[0].reset();
-                            $('#teamModal').modal('hide');
-                            alert('New Member added successfully!');
-                        } else {
-                            alert('Error: ' + response.message);
-                        }
-                    },
-                    error: function(error) {
-                        console.log('AJAX error:', error);
-                        alert('Error submitting form');
-                    }
-                });
-            });
+  var study_code = {{ study.study_code | tojson }};
+  try {
+    $(document).ready(function () {
+      console.log('jQuery loaded, initializing modal...');
+
+      $('#teamForm').submit(function (event) {
+        event.preventDefault();
+        console.log('Form submitted, sending AJAX...');
+
+        $.ajax({
+          type: 'POST',
+          url: '/study/' + study_code + '/add_team_member',
+          data: $(this).serialize(),
+          success: function (response) {
+            console.log('AJAX success:', response);
+
+            if (response.status === 'success') {
+              // Clear current table body
+              $('#teamTable tbody').empty();
+
+              // Loop through all members returned by the server
+              response.members.forEach(function (m, index) {
+                $('#teamTable tbody').append(
+                  `<tr>
+                      <td>${index + 1}</td>
+                      <td>${m.full_name}</td>
+                      <td>${m.study_role}</td>
+                      <td>${m.start_date}</td>
+                      <td>${m.end_date}</td>
+                  </tr>`
+                );
+              });
+
+              // Reset form and close modal
+              $('#teamForm')[0].reset();
+              $('#teamModal').modal('hide');
+              // alert('Team list updated successfully!');
+            } else {
+              alert('Error: ' + response.message);
+            }
+          },
+          error: function (error) {
+            console.log('AJAX error:', error);
+            alert('Error submitting form');
+          }
         });
-    } catch (e) {
-        console.error('JavaScript error:', e);
-    }
+      });
+    });
+  } catch (e) {
+    console.error('JavaScript error:', e);
+  }
 </script>
+
 
  {% include  'footer.html' %} 

@@ -75,6 +75,7 @@ options_dict ={
   'find_role':['Sponsor','Co-Sponsor','Funding','Other'],
   'study_population':['Adults','Children','Mixed','Other' ],
   'inv_prod':['Early Prototype','Optimized Prototype (All its iterations)','Design Lock','Post Approval','Other'],
-  'oir_team':['Yes','No']
+  'oir_team':['Yes','No'],
+  'gender':['Male','Female','Not Reported', 'Other']
 }
 

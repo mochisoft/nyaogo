@@ -183,6 +183,7 @@ dependencies = [
     { name = "flask" },
     { name = "flask-migrate" },
     { name = "flask-sqlalchemy" },
+    { name = "sqlalchemy" },
 ]
 
 [package.metadata]
@@ -190,6 +191,7 @@ requires-dist = [
     { name = "flask", specifier = ">=3.1.2" },
     { name = "flask-migrate", specifier = ">=4.1.0" },
     { name = "flask-sqlalchemy", specifier = ">=3.1.1" },
+    { name = "sqlalchemy", specifier = ">=2.0.43" },
 ]
 
 [[package]]
